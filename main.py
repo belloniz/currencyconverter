@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return "Home page"
 
 @app.route('/convertemoeda/<amountInReal>',methods=['GET'])
 def convertCurrency(amountInReal):
