@@ -1,35 +1,20 @@
-import requests
 from flask import Flask
-from flask import jsonify 
-
-def get_usd_and_eur_currency():
-    url = "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL"
-
-    payload={}
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic Og=='
-    }
-    response = requests.request("GET", url, headers=headers, data=payload)
-    response_data = response.json()
-
-    return {
-        "current_usd": response_data["USDBRL"]["ask"],
-        "current_eur": response_data["EURBRL"]["ask"]
-    }
+from flask import jsonify
+from currency_api import get_usd_and_eur_currency
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Home page"
+    return "Main page"
 
 @app.route('/convertemoeda/<amountInReal>',methods=['GET'])
 def convertCurrency(amountInReal):
+    amountInReal = float(amountInReal)
     currency_data = get_usd_and_eur_currency()
-    amountInReal = round(float(amountInReal), 2)
-    amountInUSD = round(float(currency_data["current_usd"])*float(amountInReal), 2)
-    amountInEUR = round(float(currency_data["current_eur"])*float(amountInReal), 2)
+
+    amountInUSD = currency_data["current_usd"]*amountInReal
+    amountInEUR = currency_data["current_eur"]*amountInReal
 
     return jsonify({
         "conversao": {
