@@ -5,8 +5,8 @@ from currency_api import get_usd_and_eur_currency
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
-    return "Main page"
+def home_page():
+    return "Home page"
 
 @app.route('/convertemoeda/<amountInReal>',methods=['GET'])
 def convertCurrency(amountInReal):
